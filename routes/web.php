@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CarouselController;
+use App\Models\Carousel;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $carousels = Carousel::where('status',1)->orderBy('id', 'DESC')->get();
+    return view('carousels.slider',compact('carousels'));
 });
+Route::get('carousels',[CarouselController::class,'index'])->name('carousels');
+Route::get('carousel/create',[CarouselController::class,'create_page'])->name('carousels-create_page');
+Route::post('carousel/create',[CarouselController::class,'create'])->name('carousels-create');
+Route::get('carousel/edit/{id}',[CarouselController::class,'edit_page'])->name('edit_page');
+Route::post('carousel/edit/{id}',[CarouselController::class,'edit'])->name('carousel-edit');
+Route::get('carousel/delete',[CarouselController::class,'delete'])->name('carousel-delete');
